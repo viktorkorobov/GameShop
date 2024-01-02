@@ -6,9 +6,6 @@ import org.gameshop.model.User;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
-import java.sql.SQLException;
-
-
 
 public class UserDaoTest {
     private UserDaoMock userDao;
@@ -26,7 +23,7 @@ public class UserDaoTest {
     }
 
     @Test
-    void testGetUserById() throws SQLException {
+    void testGetUserById() {
         User user = new User(null, "TestUser", "test_user", null, "test123", 100);
         userDao.createUser(user);
 
