@@ -1,5 +1,6 @@
 package org.gameshop.management;
 
+import lombok.Getter;
 import org.gameshop.database.dao.UserDao;
 import org.gameshop.model.User;
 import java.sql.*;
@@ -10,6 +11,10 @@ import lombok.RequiredArgsConstructor;
 public class UserManager {
     private final Scanner scanner;
     private final UserDao userDao;
+    @Getter
+    private boolean loggedIn = false;
+    @Getter
+    private Long userId = null;
 
     public void showUserMenu() {
         while (true) {
@@ -89,6 +94,8 @@ public class UserManager {
             User user = userDao.getUserByNicknameAndPassword(nickname, password);
 
             if (user != null) {
+                loggedIn = true;
+                userId = user.getId();
                 System.out.println("Login successful! Welcome, " + user.getName() + "!");
             } else {
                 System.out.println("Invalid nickname or password. Please try again.");

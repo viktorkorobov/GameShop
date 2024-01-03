@@ -5,14 +5,14 @@ import lombok.RequiredArgsConstructor;
 import java.sql.*;
 @RequiredArgsConstructor
 public class DatabaseConnector {
-    private final String URL;
-    private final String USER;
-    private final String PASSWORD;
     private Connection connection;
 
     public Connection getConnection() throws SQLException {
+        String url = DatabaseConfig.getDbUrl();
+        String user = DatabaseConfig.getDbUser();
+        String password = DatabaseConfig.getDbPassword();
         if (connection == null || connection.isClosed()) {
-            connection = DriverManager.getConnection(URL, USER, PASSWORD);
+            connection = DriverManager.getConnection(url, user, password);
         }
         return connection;
     }

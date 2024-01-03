@@ -18,7 +18,7 @@ public class GameManager {
     private final Scanner scanner;
     private final GameDao gameDao;
     private final UserDao userDao;
-
+    private final UserManager userManager;
     public void showGameMenu() {
         while (true) {
             printGameMenu();
@@ -72,11 +72,13 @@ public class GameManager {
     }
 
     private void purchaseGame() {
+        if (!userManager.isLoggedIn()) {
+            System.out.println("Please login to purchase the game.");
+            return;
+        }
         System.out.println("Enter details to purchase a game:");
 
-        System.out.print("User ID: ");
-        Long userId = scanner.nextLong();
-
+        Long userId = userManager.getUserId();
         System.out.print("Game ID: ");
         Long gameId = scanner.nextLong();
 

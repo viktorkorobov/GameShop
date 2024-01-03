@@ -16,7 +16,7 @@ public class ConsoleInterface {
     public ConsoleInterface(UserDao userDao, GameDao gameDao) {
         this.scanner = new Scanner(System.in);
         this.userManager = new UserManager(scanner, userDao);
-        this.gameManager = new GameManager(scanner, gameDao, userDao);
+        this.gameManager = new GameManager(scanner, gameDao, userDao, userManager);
         this.accountManager = new AccountManager(scanner, userDao);
     }
 

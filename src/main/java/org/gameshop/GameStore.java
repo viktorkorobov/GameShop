@@ -8,7 +8,7 @@ import org.gameshop.database.dao.impl.UserDaoImpl;
 
 public class GameStore {
     public static void main(String[] args) {
-        DatabaseConnector databaseConnector = new DatabaseConnector("jdbc:postgresql://localhost:5432/GameShop", "postgres", "Aa111111");
+        DatabaseConnector databaseConnector = new DatabaseConnector();
         UserDao userDao = new UserDaoImpl(databaseConnector);
         GameDao gameDao = new GameDaoImpl(databaseConnector);
 
