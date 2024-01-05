@@ -1,7 +1,6 @@
 package org.gameshop.database.dao.impl;
 
 import lombok.RequiredArgsConstructor;
-import org.gameshop.database.DatabaseConnector;
 import org.gameshop.database.dao.GameDao;
 import org.gameshop.model.Game;
 
@@ -10,7 +9,8 @@ import java.util.ArrayList;
 import java.util.List;
 @RequiredArgsConstructor
 public class GameDaoImpl implements GameDao {
-    private final DatabaseConnector databaseConnector;
+
+    private final Connection connection;
 
     private static final String SELECT_ALL_GAMES_QUERY = "SELECT * FROM Games";
     private static final String SELECT_GAME_BY_ID = "SELECT * FROM Games WHERE id = ?";
@@ -18,8 +18,7 @@ public class GameDaoImpl implements GameDao {
 
     @Override
     public Game getGameById(Long gameId) throws SQLException {
-        try (Connection connection = databaseConnector.getConnection();
-             PreparedStatement statement = connection.prepareStatement(SELECT_GAME_BY_ID)) {
+            PreparedStatement statement = connection.prepareStatement(SELECT_GAME_BY_ID);
             statement.setLong(1, gameId);
 
             try (ResultSet resultSet = statement.executeQuery()) {
@@ -27,31 +26,26 @@ public class GameDaoImpl implements GameDao {
                     return extractGameFromResultSet(resultSet);
                 }
             }
-        }
         return null;
     }
 
     @Override
     public List<Game> getAllGames() throws SQLException {
         List<Game> games = new ArrayList<>();
-        try (Connection connection = databaseConnector.getConnection();
-             PreparedStatement statement = connection.prepareStatement(SELECT_ALL_GAMES_QUERY);
-             ResultSet resultSet = statement.executeQuery()) {
-            while (resultSet.next()) {
-                games.add(extractGameFromResultSet(resultSet));
-            }
+        PreparedStatement statement = connection.prepareStatement(SELECT_ALL_GAMES_QUERY);
+        ResultSet resultSet = statement.executeQuery();
+        while (resultSet.next()) {
+             games.add(extractGameFromResultSet(resultSet));
         }
         return games;
     }
 
     @Override
     public void purchaseGame(Long userId, Long gameId) throws SQLException {
-        try (Connection connection = databaseConnector.getConnection();
-             PreparedStatement statement = connection.prepareStatement(INSERT_PURCHASE_QUERY)) {
+            PreparedStatement statement = connection.prepareStatement(INSERT_PURCHASE_QUERY);
             statement.setLong(1, userId);
             statement.setLong(2, gameId);
             statement.executeUpdate();
-        }
     }
 
     private Game extractGameFromResultSet(ResultSet resultSet) throws SQLException {

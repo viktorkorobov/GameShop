@@ -43,13 +43,14 @@ public class GameDaoTest {
     public void testPurchaseGame() {
         GameDaoMock gameDao = new GameDaoMock();
         Long userId = 1L;
-        Long gameId = 1L;
+        Game game = new Game(1L,"Game1", null, 4.0, 40.0, "Description 1");
+        gameDao.addGame(game);
 
-        assertFalse(gameDao.hasUserPurchasedGame(userId, gameId));
+        assertFalse(gameDao.hasUserPurchasedGame(userId, game.getId()));
 
-        assertDoesNotThrow(() -> gameDao.purchaseGame(userId, gameId));
+        assertDoesNotThrow(() -> gameDao.purchaseGame(userId, game.getId()));
 
-        assertTrue(gameDao.hasUserPurchasedGame(userId, gameId));
+        assertTrue(gameDao.hasUserPurchasedGame(userId, game.getId()));
     }
 
 }
