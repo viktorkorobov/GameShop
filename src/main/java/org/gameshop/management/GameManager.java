@@ -76,6 +76,7 @@ public class GameManager {
             System.out.println("Please login to purchase the game.");
             return;
         }
+
         System.out.println("Enter details to purchase a game:");
 
         Long userId = userManager.getUserId();
@@ -88,18 +89,20 @@ public class GameManager {
             if (game != null) {
                 User user = userDao.getUserById(userId);
 
-                if (user != null) {
-                    if (user.getAmount() >= game.getCost()) {
-                        user.setAmount(user.getAmount() - game.getCost());
-                        gameDao.purchaseGame(userId, gameId);
-                        userDao.updateUser(user);
-                        System.out.println("Purchase successful! Remaining amount in the account: " + user.getAmount());
-                    } else {
-                        System.out.println("Insufficient funds. Please deposit more money to your account.");
-                    }
-                } else {
+                if (user == null) {
                     System.out.println("User not found. Please enter a valid User ID.");
+                    return;
                 }
+
+                if (user.getAmount() >= game.getCost()) {
+                    user.setAmount(user.getAmount() - game.getCost());
+                    gameDao.purchaseGame(userId, gameId);
+                    userDao.updateUser(user);
+                    System.out.println("Purchase successful! Remaining amount in the account: " + user.getAmount());
+                } else {
+                    System.out.println("Insufficient funds. Please deposit more money to your account.");
+                }
+
             } else {
                 System.out.println("Game not found. Please enter a valid Game ID.");
             }
